@@ -1,8 +1,7 @@
 {
     "name": "allyans3/bitskins-api-v2",
     "description": "Bitskins API V2 package",
-    "type": "composer-plugin",
-    "license": "proprietary",
+    "license": "MIT",
     "authors": [
         {
             "name": "Allyans3",
