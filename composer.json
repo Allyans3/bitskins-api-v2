@@ -1,0 +1,22 @@
+{
+    "name": "allyans3/bitskins-api-v2",
+    "description": "Bitskins API V2 package",
+    "type": "composer-plugin",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Allyans3",
+            "email": "a.sylenok@gmail.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "*",
+        "spomky-labs/otphp": "^9.1",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bitskins\\": "src/"
+        }
+    }
+}
