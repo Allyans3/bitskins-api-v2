@@ -490,6 +490,6 @@ class BitskinsApi
 
         $query = http_build_query($parameters) . $options;
 
-        return $this->entrypoint . $method . '/?' . $query;
+        return $this->entryPoint . $method . '/?' . $query;
     }
 }
