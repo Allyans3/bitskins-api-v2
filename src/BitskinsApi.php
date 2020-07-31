@@ -197,9 +197,10 @@ class BitskinsApi
         return $this->request(
             $this->buildEndpoint($method, compact(
                     'code',
-                    'app_id',
                     'item_ids',
                     'prices',
+                    'app_id',
+                    'auto_trade',
                     'allow_trade_delayed_purchases'
                 )
             )
@@ -471,6 +472,282 @@ class BitskinsApi
         );
     }
 
+    //---------------------------------Buy orders------------------------------------------
+
+    /**
+     * Create buy order
+     *
+     * @see https://bitskins.com/api_market_buy_orders#create_buy_order
+     * @param string $code
+     * @param string $market_hash_name
+     * @param string $price
+     * @param string $quantity
+     * @param int $app_id
+     * @return mixed
+     */
+    public function createBuyOrder(string $code, string $market_hash_name, string $price, int $quantity = 1, int $app_id = 730)
+    {
+        $method = 'create_buy_order';
+
+        return $this->request(
+            $this->buildEndpoint($method, compact('code', 'market_hash_name', 'price', 'quantity', 'app_id'))
+        );
+    }
+
+    /**
+     * Retrieve the expected place in queue for a new buy order without creating the buy order.
+     *
+     * @see https://bitskins.com/api_market_buy_orders#get_expected_place_in_queue_for_new_buy_order
+     * @param string $code
+     * @param string $market_hash_name
+     * @param string $price
+     * @param int $app_id
+     * @return mixed
+     */
+    public function getExpectedPlaceInQueue(string $code, string $market_hash_name, string $price, int $app_id = 730)
+    {
+        $method = 'get_expected_place_in_queue_for_new_buy_order';
+
+        return $this->request(
+            $this->buildEndpoint($method, compact('code', 'market_hash_name', 'price', 'app_id'))
+        );
+    }
+
+    /**
+     * Allows you to cancel upto 999 active buy orders.
+     *
+     * @see https://bitskins.com/api_market_buy_orders#cancel_buy_orders
+     * @param string $code
+     * @param int $app_id
+     * @param array $buy_order_ids
+     * @return mixed
+     */
+    public function cancelBuyOrders(string $code, array $buy_order_ids, int $app_id = 730)
+    {
+        $method = 'cancel_buy_orders';
+
+        return $this->request(
+            $this->buildEndpoint($method, compact('code', 'buy_order_ids', 'app_id'))
+        );
+    }
+
+    /**
+     * Cancel all buy orders for a given item name.
+     *
+     * @see https://bitskins.com/api_market_buy_orders#cancel_all_buy_orders
+     * @param string $code
+     * @param int $app_id
+     * @param string $market_hash_name
+     * @return mixed
+     */
+    public function cancelAllBuyOrdersByName(string $code, string $market_hash_name, int $app_id = 730)
+    {
+        $method = 'cancel_all_buy_orders';
+
+        return $this->request(
+            $this->buildEndpoint($method, compact('code', 'market_hash_name', 'app_id'))
+        );
+    }
+
+    /**
+     * Retrieve all buy orders you have placed, whether active or not.
+     *
+     * @see https://bitskins.com/api_market_buy_orders#get_buy_order_history
+     * @param string $code
+     * @param int $app_id
+     * @param string|null $market_hash_name
+     * @param int|null $page
+     * @param string|null $type
+     * @return mixed
+     */
+    public function getMyBuyOrders(string $code, int $app_id = 730, string $market_hash_name = null, int $page = null, string $type = null)
+    {
+        $method = 'get_buy_order_history';
+
+        return $this->request(
+            $this->buildEndpoint($method, compact('code', 'app_id', 'market_hash_name', 'page', 'type'))
+        );
+    }
+
+    /**
+     * Allows you to retrieve all buy orders you made that have been settled. Provides information on the item you purchased to settle this buy order. Deprecated, use get_buy_order_history.
+     *
+     * @see https://bitskins.com/api_market_buy_orders#get_settled_buy_orders
+     * @param string $code
+     * @param int $app_id
+     * @param int|null $page
+     * @return mixed
+     */
+    public function getSettledBuyOrders(string $code, int $app_id = 730, int $page = null)
+    {
+        $method = 'get_settled_buy_orders';
+
+        return $this->request(
+            $this->buildEndpoint($method, compact('code', 'app_id', 'page'))
+        );
+    }
+
+    /**
+     * Allows you to retrieve all buy orders that have not been cancelled or settled. Deprecated, use get_buy_order_history.
+     *
+     * @see https://bitskins.com/api_market_buy_orders#get_active_buy_orders
+     * @param string $code
+     * @param int $app_id
+     * @param int|null $page
+     * @return mixed
+     */
+    public function getActiveBuyOrders(string $code, int $app_id = 730, int $page = null)
+    {
+        $method = 'get_active_buy_orders';
+
+        return $this->request(
+            $this->buildEndpoint($method, compact('code', 'app_id', 'page'))
+        );
+    }
+
+    /**
+     * Allows you to retrieve all buy orders that have been cancelled by you or the system.
+     * The system cancels buy orders automatically if you have insufficient funds to settle the buy order.
+     * Deprecated, use get_buy_order_history.
+     *
+     * @see https://bitskins.com/api_market_buy_orders#get_cancelled_buy_orders
+     * @param string $code
+     * @param int $app_id
+     * @param int|null $page
+     * @return mixed
+     */
+    public function getCancelledBuyOrders(string $code, int $app_id = 730, int $page = null)
+    {
+        $method = 'get_cancelled_buy_orders';
+
+        return $this->request(
+            $this->buildEndpoint($method, compact('code', 'app_id', 'page'))
+        );
+    }
+
+    /**
+     * Retrieve all market orders by all buyers (except your own) that need fulfillment.
+     *
+     * @see https://bitskins.com/api_market_buy_orders#get_market_buy_orders
+     * @param string $code
+     * @param int $app_id
+     * @param string|null $market_hash_name
+     * @param int|null $page
+     * @return mixed
+     */
+    public function getMarketBuyOrders(string $code, int $app_id = 730, string $market_hash_name = null, int $page = null)
+    {
+        $method = 'get_market_buy_orders';
+
+        return $this->request(
+            $this->buildEndpoint($method, compact('code', 'app_id', 'market_hash_name', 'page'))
+        );
+    }
+
+    /**
+     * Allows you to retrieve a summary of all market buy orders. Results include your own buy orders, where applicable.
+     *
+     * @see https://bitskins.com/api_market_buy_orders#summarize_buy_orders
+     * @param string $code
+     * @param int $app_id
+     * @return mixed
+     */
+    public function summarizeBuyOrders(string $code, int $app_id = 730)
+    {
+        $method = 'summarize_buy_orders';
+
+        return $this->request(
+            $this->buildEndpoint($method, compact('code', 'app_id'))
+        );
+    }
+
+    //-----------------------------------Crypto deposits-------------------------------------------------
+
+    /**
+     * Allows you to retrieve your account's permanent Bitcoin deposit address.
+     * Any funds sent to this address are credited to BitSkins at the current conversion rate.
+     * Conversion rates are locked in when the Bitcoin network broadcasts your transaction.
+     * Multiple simultaneous calls to this method may result in 'Failed to acquire lock' errors.
+     *
+     * @see https://bitskins.com/api_bitcoin#get_permanent_deposit_address
+     * @param string $code
+     * @param string $network
+     * @return mixed
+     */
+    public function getPermanentDepositAddress(string $code, string $network = 'bitcoin')
+    {
+        $method = 'get_permanent_deposit_address';
+
+        return $this->request(
+            $this->buildEndpoint($method, compact('code', 'network'))
+        );
+    }
+
+    /**
+     * Allows you to retrieve the current conversion rate per Bitcoin (in USD), and the time this conversion rate will expire.
+     *
+     * @see https://bitskins.com/api_bitcoin#get_current_deposit_conversion_rate
+     * @param string $code
+     * @param string $network
+     * @return mixed
+     */
+    public function getCurrentDepositConversionRate(string $code, string $network = 'bitcoin')
+    {
+        $method = 'get_current_deposit_conversion_rate';
+
+        return $this->request(
+            $this->buildEndpoint($method, compact('code', 'network'))
+        );
+    }
+
+    /**
+     * Allows you to generate a payment request for Bitcoin.
+     * Can optionally be made for deposits into other users' Steam accounts.
+     * WARNING: Input/Output has changed as of 01/17/2017.
+     * You can now deposit any amount of Bitcoin to a given address (more than 0.0002 BTC).
+     * Addresses no longer expire, all valid payments will get deposited into the destination users' accounts.
+     * This is a legacy API call: you do not need this to fund your BitSkins account.
+     * Simply send Bitcoin to the account's deposit address.
+     * Multiple simultaneous calls to this method may result in 'Failed to acquire lock' errors.
+     *
+     * @see https://bitskins.com/api_bitcoin#create_bitcoin_payment
+     * @param string $code
+     * @param float $amount
+     * @param string|null $uid
+     * @return mixed
+     */
+    public function createBitcoinPayment(string $code, float $amount, string $uid = null)
+    {
+        $method = 'create_bitcoin_payment';
+
+        return $this->request(
+            $this->buildEndpoint($method, compact('code', 'amount', 'uid'))
+        );
+    }
+
+    /**
+     * Allows you to retrieve status for your Bitcoin deposits.
+     * WARNING: Input/Output has changed as of 01/17/2017.
+     * Multiple simultaneous calls to this method may result in 'Failed to acquire lock' errors.
+     *
+     * @param string $code
+     * @param string $txid
+     * @param string|null $uid
+     * @return mixed
+     */
+    public function getBitcoinPaymentStatus(string $code, string $txid, string $uid = null)
+    {
+        $method = 'get_bitcoin_payment_status';
+
+        return $this->request(
+            $this->buildEndpoint($method, compact('code', 'txid', 'uid'))
+        );
+    }
+
+    /**
+     * @param string $endpoint
+     * @return mixed
+     */
     public function request(string $endpoint)
     {
         $response = $this->client->request('GET', $endpoint);
@@ -478,6 +755,11 @@ class BitskinsApi
         return json_decode($response->getBody(), true);
     }
 
+    /**
+     * @param string $method
+     * @param array $parameters
+     * @return string
+     */
     protected function buildEndpoint(string $method, array $parameters) : string
     {
         $parameters['api_key'] = $this->apiKey;
