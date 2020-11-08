@@ -284,13 +284,14 @@ class BitskinsApi
      */
     public function relistItem(string $code, array $item_ids, array $prices, int $app_id = 730)
     {
-        $method = 'delist_item';
+        $method = 'relist_item';
 
         $item_ids = implode(',', $item_ids);
         $prices = implode(',', $prices);
 
         return $this->request(
-            $this->buildEndpoint($method, compact('code', 'app_id', 'item_ids', 'prices'))
+            $this->buildEndpoint($method, compact('code', 'app_id', 'item_ids', 'prices')),
+            "POST"
         );
     }
 
@@ -746,11 +747,12 @@ class BitskinsApi
 
     /**
      * @param string $endpoint
+     * @param string $method
      * @return mixed
      */
-    public function request(string $endpoint)
+    public function request(string $endpoint, string $method = "GET")
     {
-        $response = $this->client->request('GET', $endpoint);
+        $response = $this->client->request($method, $endpoint);
 
         return json_decode($response->getBody(), true);
     }
