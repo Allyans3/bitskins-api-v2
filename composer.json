@@ -10,7 +10,7 @@
     ],
     "require": {
         "guzzlehttp/guzzle": "*",
-        "spomky-labs/otphp": "^9.1",
+        "spomky-labs/otphp": "^10.0.1",
         "ext-json": "*"
     },
     "autoload": {
